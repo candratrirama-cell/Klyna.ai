@@ -3,257 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyna AI - The Future of Intelligence</title>
+    <title>Klyna AI - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; scroll-behavior: smooth; color: #f8fafc; }
         .glass-card { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(59, 130, 246, 0.1); }
-        .text-glow { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
         .user-bubble { background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 20px 20px 4px 20px; }
         .ai-bubble { background: #1e293b; border-radius: 4px 20px 20px 20px; border: 1px solid rgba(255,255,255,0.05); }
         .typing-dot { width: 6px; height: 6px; background: #3b82f6; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out; }
         @keyframes bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }
         .canvas-slide { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        /* Landing Animation */
-        .fade-up { animation: fadeUp 0.8s ease-out forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="text-slate-200 min-h-screen">
+<body class="h-screen overflow-hidden flex flex-col">
 
-    <div id="landing-section" class="relative overflow-hidden">
-        <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto">
-            <div class="text-2xl font-black text-white tracking-tighter">KLYNA<span class="text-blue-500">.</span></div>
-            <button onclick="goToAuth()" class="px-6 py-2 bg-blue-600/10 border border-blue-500/20 rounded-full text-blue-400 font-bold hover:bg-blue-600 hover:text-white transition-all text-sm">Masuk</button>
+    <div id="landing-section" class="fixed inset-0 z-[120] bg-[#020617] overflow-y-auto">
+        <nav class="flex justify-between p-6 max-w-6xl mx-auto items-center">
+            <div class="text-2xl font-black text-blue-500">KLYNA.</div>
+            <button onclick="goToAuth()" class="bg-blue-600 px-6 py-2 rounded-full font-bold text-sm">Masuk</button>
         </nav>
-
-        <div class="max-w-7xl mx-auto px-6 pt-20 pb-32 flex flex-col items-center text-center">
-            <div class="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold tracking-widest uppercase fade-up">
-                AI Assistant Generasi Terbaru
-            </div>
-            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight fade-up" style="animation-delay: 0.1s">
-                Bicara dengan Masa Depan <br><span class="text-blue-500 text-glow">Bersama Klyna AI</span>
-            </h1>
-            <p class="text-slate-400 max-w-2xl text-lg mb-10 fade-up" style="animation-delay: 0.2s">
-                Asisten pintar yang siap membantu coding, menulis, dan merender HTML secara langsung. Tanpa batas, tanpa ribet.
-            </p>
-            <div class="flex gap-4 fade-up" style="animation-delay: 0.3s">
-                <button onclick="goToAuth()" class="px-8 py-4 bg-blue-600 rounded-2xl font-bold text-white shadow-xl shadow-blue-600/20 hover:scale-105 transition-all">Mulai Gratis Sekarang</button>
-                <a href="#features" class="px-8 py-4 bg-slate-900 border border-slate-800 rounded-2xl font-bold hover:bg-slate-800 transition-all">Lihat Fitur</a>
-            </div>
+        <div class="max-w-4xl mx-auto text-center pt-24 px-6">
+            <h1 class="text-6xl font-black mb-6 leading-tight">Masa Depan AI <br><span class="text-blue-500">Dalam Genggaman.</span></h1>
+            <p class="text-slate-400 mb-10 text-lg">Asisten cerdas dengan fitur Live Canvas Preview. Coding lebih cepat, hasil nyata.</p>
+            <button onclick="goToAuth()" class="bg-blue-600 px-10 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-600/20">Mulai Chat Sekarang</button>
         </div>
-
-        <div id="features" class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-3 gap-8">
-            <div class="glass-card p-8 rounded-[2rem]">
-                <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-500 text-2xl">⚡</div>
-                <h3 class="text-xl font-bold mb-3 text-white">Respon Cepat</h3>
-                <p class="text-slate-500 text-sm">Didukung oleh Klyna Engine terbaru untuk jawaban instan tanpa menunggu lama.</p>
-            </div>
-            <div class="glass-card p-8 rounded-[2rem]">
-                <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-500 text-2xl">🎨</div>
-                <h3 class="text-xl font-bold mb-3 text-white">Live Artifact</h3>
-                <p class="text-slate-500 text-sm">Kirim kode HTML dan lihat hasilnya langsung di kanvas preview sisi kanan.</p>
-            </div>
-            <div class="glass-card p-8 rounded-[2rem]">
-                <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-500 text-2xl">👑</div>
-                <h3 class="text-xl font-bold mb-3 text-white">Lifetime Access</h3>
-                <p class="text-slate-500 text-sm">Cukup bayar Rp500 sekali seumur hidup untuk fitur premium tanpa batas.</p>
-            </div>
-        </div>
-        
-        <footer class="py-10 text-center text-slate-600 text-xs border-t border-white/5">
-            © 2026 Klyna AI. All rights reserved.
-        </footer>
     </div>
 
-    <div id="auth-page" class="hidden fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center p-6">
+    <div id="auth-page" class="hidden fixed inset-0 z-[130] bg-slate-950 flex items-center justify-center p-6">
         <div class="w-full max-w-md glass-card p-10 rounded-[2.5rem] text-center">
-            <h1 class="text-5xl font-extrabold text-white mb-2 tracking-tighter">KLYNA<span class="text-blue-500">.</span></h1>
-            <p class="text-slate-500 text-sm mb-10">Sign in to your dashboard</p>
+            <h2 class="text-3xl font-black mb-8">Login Ke Klyna</h2>
             <div class="space-y-4 text-left">
-                <input id="username" type="text" placeholder="Username" class="w-full p-4 bg-slate-900/50 rounded-2xl border border-slate-800 focus:border-blue-500 outline-none transition-all">
-                <input id="password" type="password" placeholder="Password" class="w-full p-4 bg-slate-900/50 rounded-2xl border border-slate-800 focus:border-blue-500 outline-none transition-all text-white">
-                <button onclick="login()" class="w-full bg-blue-600 p-4 rounded-2xl font-bold hover:bg-blue-500 transition-all transform active:scale-95 shadow-xl shadow-blue-900/20">Sign In</button>
-                <button onclick="backToLanding()" class="w-full text-slate-600 text-[10px] uppercase font-bold tracking-widest mt-2">← Kembali</button>
+                <input id="username" type="text" placeholder="Username" class="w-full p-4 bg-slate-900 rounded-2xl border border-slate-800 outline-none focus:border-blue-500">
+                <input id="password" type="password" placeholder="Password" class="w-full p-4 bg-slate-900 rounded-2xl border border-slate-800 outline-none focus:border-blue-500">
+                <button onclick="login()" class="w-full bg-blue-600 p-4 rounded-2xl font-bold hover:bg-blue-500 transition-all active:scale-95">Sign In</button>
+                <button onclick="location.reload()" class="w-full text-slate-500 text-[10px] font-bold mt-4">KEMBALI KE BERANDA</button>
             </div>
         </div>
     </div>
 
     <div id="app-container" class="hidden flex h-screen overflow-hidden">
-        <div class="flex-1 flex flex-col min-w-0 bg-[#020617]">
+        <div class="flex-1 flex flex-col bg-[#020617] border-r border-white/5">
             <header class="h-16 flex justify-between items-center px-6 border-b border-white/5 glass-card">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">K</div>
-                    <span id="badge" class="text-[11px] font-bold tracking-widest px-3 py-1 rounded-full">⚡ FREE TIER</span>
+                    <span id="badge" class="text-[10px] font-bold tracking-widest px-3 py-1 rounded-full bg-slate-800 text-slate-400">LOADING...</span>
                 </div>
-                <button onclick="logout()" class="text-slate-500 hover:text-white text-xs font-medium">LOGOUT</button>
+                <button onclick="logout()" class="text-xs text-slate-500 font-bold">LOGOUT</button>
             </header>
-
-            <div id="chat-box" class="flex-1 overflow-y-auto p-4 md:p-10 space-y-8">
-                <div id="chat-inner" class="max-w-3xl mx-auto space-y-6 pt-10">
-                    <div class="flex justify-start">
-                        <div class="ai-bubble p-4 px-6 text-slate-300 text-sm border border-slate-800">
-                            Selamat datang! Ada yang bisa saya bantu hari ini?
-                        </div>
-                    </div>
-                </div>
+            <div id="chat-box" class="flex-1 overflow-y-auto p-4 md:p-10 space-y-6">
+                <div id="chat-inner" class="max-w-3xl mx-auto space-y-6 pt-10"></div>
             </div>
-
             <div class="p-6">
                 <div class="max-w-3xl mx-auto glass-card rounded-3xl p-2 flex items-center gap-2 shadow-2xl">
-                    <input id="chat-input" type="text" placeholder="Tanyakan apapun..." class="flex-1 bg-transparent p-4 outline-none text-sm ml-2 text-white" onkeypress="if(event.key==='Enter') sendMessage()">
-                    <button onclick="sendMessage()" class="p-4 bg-blue-600 rounded-2xl hover:bg-blue-500 transition-all active:scale-90 shadow-lg shadow-blue-600/30 text-white">
+                    <input id="chat-input" type="text" placeholder="Tanya sesuatu..." class="flex-1 bg-transparent p-4 outline-none text-sm ml-2 text-white" onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button onclick="sendMessage()" class="p-4 bg-blue-600 rounded-2xl hover:bg-blue-500 transition-all text-white">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                     </button>
                 </div>
-                <p id="upgrade-btn" class="text-center text-[10px] mt-4 text-blue-500/50 hover:text-blue-400 cursor-pointer font-bold uppercase tracking-widest" onclick="buyPremium()">✨ Get Premium Lifetime Rp500 ✨</p>
+                <p id="upgrade-btn" class="text-center text-[10px] mt-4 text-blue-500/50 hover:text-blue-400 cursor-pointer font-bold" onclick="buyPremium()">✨ UPGRADE PREMIUM LIFETIME RP500 ✨</p>
             </div>
         </div>
 
-        <div id="canvas-area" class="hidden lg:flex flex-col w-[500px] bg-white border-l border-white/10 canvas-slide translate-x-full">
-            <div class="h-16 bg-slate-900 flex justify-between items-center px-6">
-                <span class="text-[11px] font-bold text-slate-400 tracking-widest uppercase">Live Artifact Preview</span>
-                <button onclick="closeCanvas()" class="text-red-400 text-xs font-bold">CLOSE</button>
+        <div id="canvas-area" class="hidden lg:flex flex-col w-[550px] bg-slate-900 border-l border-white/10 canvas-slide translate-x-full">
+            <div class="h-16 bg-slate-900 flex justify-between items-center px-4 border-b border-white/5">
+                <div class="flex bg-slate-800 p-1 rounded-xl">
+                    <button onclick="switchTab('preview')" id="btn-preview" class="px-4 py-1.5 rounded-lg text-[10px] font-bold bg-blue-600 text-white">PREVIEW</button>
+                    <button onclick="switchTab('code')" id="btn-code" class="px-4 py-1.5 rounded-lg text-[10px] font-bold text-slate-400">KODE</button>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="copy-btn" onclick="copyCanvasCode()" class="hidden text-[10px] font-bold text-blue-400 bg-blue-400/10 px-3 py-1.5 rounded-lg border border-blue-400/20">SALIN KODE</button>
+                    <button onclick="closeCanvas()" class="text-red-400 text-xs font-bold">TUTUP</button>
+                </div>
             </div>
             <iframe id="preview-frame" class="flex-1 w-full bg-white"></iframe>
+            <textarea id="code-view" readonly class="hidden flex-1 w-full bg-[#020617] text-blue-300 p-6 text-xs font-mono outline-none"></textarea>
         </div>
     </div>
 
-    <div id="pay-modal" class="fixed inset-0 bg-slate-950/90 hidden items-center justify-center p-6 z-[110] backdrop-blur-xl">
+    <div id="pay-modal" class="fixed inset-0 bg-slate-950/90 hidden items-center justify-center p-6 z-[140] backdrop-blur-xl">
         <div class="bg-white p-10 rounded-[3rem] text-center w-full max-w-xs shadow-2xl text-slate-900">
             <h3 class="text-xl font-black mb-1">Go Premium</h3>
-            <p class="text-slate-400 text-xs mb-8">Scan QRIS untuk akses selamanya</p>
-            <div class="bg-slate-50 p-4 rounded-3xl mb-6 border border-slate-100">
-                <img id="qris-img" class="w-full" src="">
-            </div>
-            <p class="text-blue-600 font-bold text-[10px] animate-pulse">MENUNGGU PEMBAYARAN RP500...</p>
-            <button onclick="closeModal()" class="mt-8 text-xs font-bold text-slate-400 hover:text-red-500 transition-colors uppercase">Cancel</button>
+            <img id="qris-img" class="w-full my-6 border rounded-3xl" src="">
+            <p class="text-blue-600 font-bold text-[10px] animate-pulse uppercase tracking-widest">Menunggu Pembayaran...</p>
+            <button onclick="location.reload()" class="mt-8 text-xs font-bold text-slate-400 uppercase">Batal</button>
         </div>
     </div>
 
     <script>
         let checkPayInterval;
+        let currentCode = "";
 
-        // Navigation Logic
-        function goToAuth() {
-            document.getElementById('landing-section').classList.add('hidden');
-            document.getElementById('auth-page').classList.remove('hidden');
-        }
+        window.onload = () => { if(localStorage.getItem('klyna_user')) showApp(); };
 
-        function backToLanding() {
-            document.getElementById('auth-page').classList.add('hidden');
-            document.getElementById('landing-section').classList.remove('hidden');
-        }
-
-        function showApp() {
-            document.getElementById('landing-section').classList.add('hidden');
-            document.getElementById('auth-page').classList.add('hidden');
+        function goToAuth() { document.getElementById('landing-section').classList.add('hidden'); document.getElementById('auth-page').classList.remove('hidden'); }
+        function showApp() { 
+            document.getElementById('landing-section').classList.add('hidden'); 
+            document.getElementById('auth-page').classList.add('hidden'); 
             document.getElementById('app-container').classList.remove('hidden');
             updateUIStatus();
         }
 
-        // Cek Login Saat Muat Halaman
-        window.onload = () => {
-            if(localStorage.getItem('klyna_user')) showApp();
-        };
-
         function updateUIStatus() {
             const isPrem = localStorage.getItem('is_premium') === 'true';
-            const badge = document.getElementById('badge');
-            const upgradeBtn = document.getElementById('upgrade-btn');
-            if(isPrem) {
-                badge.innerText = "👑 PREMIUM";
-                badge.className = "text-[10px] font-bold tracking-widest px-3 py-1 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-600/40";
-                upgradeBtn.classList.add('hidden');
-            }
+            const b = document.getElementById('badge');
+            b.innerText = isPrem ? "👑 PREMIUM" : "⚡ FREE TIER";
+            b.className = isPrem ? "text-[10px] font-bold tracking-widest px-3 py-1 rounded-full bg-blue-600 text-white" : "text-[10px] font-bold tracking-widest px-3 py-1 rounded-full bg-slate-800 text-slate-400";
+            if(isPrem) document.getElementById('upgrade-btn').classList.add('hidden');
         }
 
         async function login() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            if(!user || !pass) return;
-
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username: user, password: pass})
-            });
+            const res = await fetch('/api/login', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: user, password: pass}) });
             const data = await res.json();
-            if(data.success) {
-                localStorage.setItem('klyna_user', user);
-                localStorage.setItem('is_premium', data.user.isPremium);
-                showApp();
-            } else alert(data.msg);
+            if(data.success) { localStorage.setItem('klyna_user', user); localStorage.setItem('is_premium', data.user.isPremium); showApp(); }
         }
 
         async function sendMessage() {
             const input = document.getElementById('chat-input');
             const text = input.value;
             if(!text) return;
-            
             appendMsg('User', text);
             input.value = '';
-
             const tid = appendTyping();
-            const res = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username: localStorage.getItem('klyna_user'), text: text})
-            });
+            const res = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: localStorage.getItem('klyna_user'), text}) });
             const data = await res.json();
             removeTyping(tid);
-
-            if(data.isPremium !== undefined) {
-                localStorage.setItem('is_premium', data.isPremium);
-                updateUIStatus();
-            }
-
-            if(data.result.includes('<html') || data.result.includes('<div')) showCanvas(data.result);
+            if(data.isPremium !== undefined) { localStorage.setItem('is_premium', data.isPremium); updateUIStatus(); }
             appendMsg('AI', data.result);
         }
 
         function appendMsg(sender, text) {
             const inner = document.getElementById('chat-inner');
             const isUser = sender === 'User';
-            const html = `
-                <div class="flex ${isUser ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    <div class="${isUser ? 'user-bubble text-white shadow-lg' : 'ai-bubble text-slate-200'} p-4 px-6 text-[14px] leading-relaxed max-w-[85%]">
-                        ${formatContent(text)}
-                    </div>
+            const hasHtml = text.includes('<html') || text.includes('<!DOCTYPE') || text.includes('<div');
+            const div = document.createElement('div');
+            div.className = `flex ${isUser ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`;
+            div.innerHTML = `
+                <div class="${isUser ? 'user-bubble text-white shadow-lg' : 'ai-bubble text-slate-200'} p-4 px-6 text-[14px] leading-relaxed max-w-[85%]">
+                    <div>${text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-blue-400 underline font-bold">$1</a>')}</div>
+                    ${!isUser && hasHtml ? `<button onclick="openCanvas(\`${text.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" class="mt-4 bg-blue-500 text-[10px] font-bold py-2 px-4 rounded-xl shadow-lg">LIHAT DI KANVAS</button>` : ''}
                 </div>`;
-            inner.innerHTML += html;
-            scrollToBottom();
+            inner.appendChild(div);
+            document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
         }
 
-        function formatContent(text) {
-            const urlRegex = /(https?:\/\/[^\s]+)/g;
-            return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" class="text-blue-400 underline font-bold">${url}</a>`);
-        }
-
-        function appendTyping() {
-            const id = 't-' + Date.now();
-            document.getElementById('chat-inner').innerHTML += `<div id="${id}" class="flex justify-start"><div class="ai-bubble p-4 px-6 flex gap-1.5"><div class="typing-dot"></div><div class="typing-dot" style="animation-delay: 0.2s"></div><div class="typing-dot" style="animation-delay: 0.4s"></div></div></div>`;
-            scrollToBottom();
-            return id;
-        }
-
-        function removeTyping(id) { document.getElementById(id)?.remove(); }
-
-        function showCanvas(code) {
-            const area = document.getElementById('canvas-area');
-            area.classList.remove('hidden');
-            setTimeout(() => area.classList.remove('translate-x-full'), 10);
+        function openCanvas(code) {
+            currentCode = code;
+            document.getElementById('canvas-area').classList.remove('hidden');
+            setTimeout(() => document.getElementById('canvas-area').classList.remove('translate-x-full'), 10);
+            document.getElementById('code-view').value = code;
+            switchTab('preview');
             const frame = document.getElementById('preview-frame');
             const doc = frame.contentDocument || frame.contentWindow.document;
             doc.open(); doc.write(code); doc.close();
         }
 
-        function closeCanvas() {
-            const area = document.getElementById('canvas-area');
-            area.classList.add('translate-x-full');
-            setTimeout(() => area.classList.add('hidden'), 400);
+        function switchTab(t) {
+            const isPrev = t === 'preview';
+            document.getElementById('preview-frame').classList.toggle('hidden', !isPrev);
+            document.getElementById('code-view').classList.toggle('hidden', isPrev);
+            document.getElementById('copy-btn').classList.toggle('hidden', isPrev);
+            document.getElementById('btn-preview').className = isPrev ? "px-4 py-1.5 rounded-lg text-[10px] font-bold bg-blue-600 text-white" : "px-4 py-1.5 rounded-lg text-[10px] font-bold text-slate-400";
+            document.getElementById('btn-code').className = !isPrev ? "px-4 py-1.5 rounded-lg text-[10px] font-bold bg-blue-600 text-white" : "px-4 py-1.5 rounded-lg text-[10px] font-bold text-slate-400";
+        }
+
+        function copyCanvasCode() {
+            navigator.clipboard.writeText(currentCode);
+            const b = document.getElementById('copy-btn'); b.innerText = "TERSALIN!";
+            setTimeout(() => b.innerText = "SALIN KODE", 2000);
         }
 
         async function buyPremium() {
@@ -261,34 +179,20 @@
             const data = await res.json();
             document.getElementById('qris-img').src = `https://api.qrserver.com/v1/create-qr-code/?data=${data.qr}`;
             document.getElementById('pay-modal').classList.replace('hidden', 'flex');
-            
             checkPayInterval = setInterval(async () => {
-                const c = await fetch('/api/pay-check', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username: localStorage.getItem('klyna_user'), trxId: data.trxId})
-                });
+                const c = await fetch('/api/pay-check', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: localStorage.getItem('klyna_user'), trxId: data.trxId}) });
                 const r = await c.json();
-                if(r.success) {
-                    clearInterval(checkPayInterval);
-                    localStorage.setItem('is_premium', 'true');
-                    updateUIStatus();
-                    document.getElementById('pay-modal').classList.replace('flex', 'hidden');
-                    alert("👑 Premium Lifetime Aktif!");
-                }
+                if(r.success) { clearInterval(checkPayInterval); localStorage.setItem('is_premium', 'true'); updateUIStatus(); document.getElementById('pay-modal').classList.add('hidden'); alert("👑 Premium Aktif!"); }
             }, 5000);
         }
 
-        function closeModal() {
-            clearInterval(checkPayInterval);
-            document.getElementById('pay-modal').classList.replace('flex', 'hidden');
+        function appendTyping() {
+            const id = 't-' + Date.now();
+            document.getElementById('chat-inner').innerHTML += `<div id="${id}" class="flex justify-start"><div class="ai-bubble p-4 px-6 flex gap-1.5"><div class="typing-dot"></div><div class="typing-dot" style="animation-delay: 0.2s"></div><div class="typing-dot" style="animation-delay: 0.4s"></div></div></div>`;
+            return id;
         }
-
-        function scrollToBottom() {
-            const box = document.getElementById('chat-box');
-            box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' });
-        }
-
+        function removeTyping(id) { document.getElementById(id)?.remove(); }
+        function closeCanvas() { document.getElementById('canvas-area').classList.add('translate-x-full'); setTimeout(() => document.getElementById('canvas-area').classList.add('hidden'), 400); }
         function logout() { localStorage.clear(); location.reload(); }
     </script>
 </body>
