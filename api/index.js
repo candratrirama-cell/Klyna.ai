@@ -1,66 +1,86 @@
-const axios = require('axios');
 const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
-const BIN_ID = "69cbcdc8aaba882197af4bcc";
-const MASTER_KEY = "$2a$10$go25lr52o.r3GKWOrNSUiO6Gdv52kcAcNS56vMiiIhlM5yX3X2ON6";
-const KLYNA_API = "https://klyna-swart.vercel.app/api/chat?key=klyna-5x9k1koc";
-const PAY_API = "https://bior-beta.vercel.app/api/pay";
-const PAY_KEY = "RPY-Y20IM0NS";
+const BIN_ID = '69cbcdc8aaba882197af4bcc';
+const MASTER_KEY = '$2a$10$go25lr52o.r3GKWOrNSUiO6Gdv52kcAcNS56vMiiIhlM5yX3X2ON6';
+const KLYNA_KEY = 'klyna-5x9k1koc';
+const RPY_KEY = 'RPY-Y20IM0NS';
 
-// Helper: Ambil data dari JSONBin
-async function getDb() {
+// Helper Database
+async function getDB() {
     const res = await axios.get(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
         headers: { 'X-Master-Key': MASTER_KEY }
     });
     return res.data.record;
 }
 
-// Helper: Update data ke JSONBin
-async function updateDb(newData) {
-    await axios.put(`https://api.jsonbin.io/v3/b/${BIN_ID}`, newData, {
+async function updateDB(data) {
+    await axios.put(`https://api.jsonbin.io/v3/b/${BIN_ID}`, data, {
         headers: { 'X-Master-Key': MASTER_KEY, 'Content-Type': 'application/json' }
     });
 }
 
-// Endpoint: Chat
-app.post('/api/chat', async (req, res) => {
-    const { username, message } = req.body;
-    let db = await getDb();
-    let user = db.users[username];
+// Route: Login/Register
+app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+    let db = await getDB();
+    if (!db.users) db.users = {};
 
-    if (!user) return res.json({ error: "User tidak ditemukan" });
-
-    // Cek Kuota
-    const today = new Date().toDateString();
-    if (user.lastReset !== today) {
-        user.dailyRequests = 0;
-        user.lastReset = today;
+    if (db.users[username]) {
+        if (db.users[username].password !== password) return res.json({ success: false, msg: 'Password salah' });
+    } else {
+        db.users[username] = { password, isPremium: false, chatCount: 0, lastDate: new Date().toDateString() };
+        await updateDB(db);
     }
+    res.json({ success: true, user: db.users[username] });
+});
 
-    if (!user.isPremium && user.dailyRequests >= 50) {
-        return res.json({ response: "Limit harian habis. Upgrade Premium Rp500 seumur hidup!" });
+// Route: Chat Logic
+app.post('/api/chat', async (req, res) => {
+    const { username, text } = req.body;
+    let db = await getDB();
+    let user = db.users[username];
+    const today = new Date().toDateString();
+
+    if (!user.isPremium) {
+        if (user.lastDate !== today) {
+            user.chatCount = 0;
+            user.lastDate = today;
+        }
+        if (user.chatCount >= 50) return res.json({ error: "Limit chat harian habis. Upgrade ke Premium!" });
     }
 
     try {
-        const response = await axios.get(`${KLYNA_API}&text=${encodeURIComponent(message)}`);
-        user.dailyRequests += 1;
-        await updateDb(db);
-        res.json({ response: response.data });
+        const response = await axios.get(`https://klyna-swart.vercel.app/api/chat?key=${KLYNA_KEY}&text=${encodeURIComponent(text)}`);
+        if (!user.isPremium) user.chatCount++;
+        await updateDB(db);
+        res.json({ result: response.data });
     } catch (e) {
-        res.status(500).json({ error: "Klyna API Error" });
+        res.json({ error: "Klyna API Offline" });
     }
 });
 
-// Endpoint: Upgrade (Bikin QRIS)
-app.get('/api/upgrade', async (req, res) => {
-    try {
-        const response = await axios.get(`${PAY_API}?key=${PAY_KEY}&amt=500`);
-        res.json(response.data);
-    } catch (e) {
-        res.status(500).json({ error: "Gagal membuat QRIS" });
+// Route: Pay & Check
+app.get('/api/pay-create', async (req, res) => {
+    const r = await axios.get(`https://bior-beta.vercel.app/api/pay?key=${RPY_KEY}&amt=500`);
+    res.json(r.data);
+});
+
+app.post('/api/pay-check', async (req, res) => {
+    const { username, trxId } = req.body;
+    const r = await axios.get(`https://bior-beta.vercel.app/api/pay?action=check&trxId=${trxId}`);
+    if (r.data.paid) {
+        let db = await getDB();
+        db.users[username].isPremium = true;
+        await updateDB(db);
+        res.json({ success: true });
+    } else {
+        res.json({ success: false });
     }
 });
 
