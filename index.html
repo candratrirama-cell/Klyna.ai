@@ -5,88 +5,189 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klyna AI - RZONE</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #0f172a; color: white; font-family: sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .neon-glow { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .hidden-page { display: none; }
     </style>
 </head>
-<body class="h-screen flex flex-col p-4">
+<body class="min-h-screen overflow-x-hidden">
 
-    <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold text-blue-400">Klyna <span class="text-white">AI</span></h1>
-        <div id="userStatus" class="text-sm bg-slate-800 px-3 py-1 rounded-full border border-slate-700">
-            Checking status...
+    <section id="page-landing" class="flex flex-col items-center justify-center min-h-screen text-center p-6">
+        <div class="mb-6 bg-blue-600/20 p-4 rounded-3xl animate-pulse">
+            <i class="fas fa-robot text-5xl text-blue-500"></i>
         </div>
-    </div>
-
-    <div id="chatBox" class="flex-1 overflow-y-auto glass rounded-xl p-4 mb-4 flex flex-col gap-3">
-        <div class="bg-blue-600 self-start p-2 rounded-lg max-w-[80%] text-sm">
-            Halo! Saya Klyna AI. Ada yang bisa saya bantu?
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Klyna <span class="text-blue-500 text-glow">AI</span></h1>
+        <p class="text-slate-400 max-w-md mb-8">Asisten cerdas generasi terbaru untuk produktivitas tanpa batas. Cepat, akurat, dan selalu siap membantu Anda.</p>
+        
+        <div class="grid grid-cols-2 gap-4 mb-10 w-full max-w-sm">
+            <div class="glass p-4 rounded-2xl text-sm">
+                <i class="fas fa-bolt text-yellow-400 mb-2"></i>
+                <p>Respon Kilat</p>
+            </div>
+            <div class="glass p-4 rounded-2xl text-sm">
+                <i class="fas fa-shield-alt text-green-400 mb-2"></i>
+                <p>Privasi Aman</p>
+            </div>
         </div>
-    </div>
 
-    <div class="flex gap-2">
-        <input id="userInput" type="text" placeholder="Tanya sesuatu..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">Kirim</button>
-    </div>
+        <button onclick="showPage('page-auth')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full transition-all hover:scale-105 neon-glow">
+            Get Started <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+    </section>
 
-    <div id="payModal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-6">
-        <div class="bg-slate-900 border border-blue-500 p-6 rounded-2xl text-center max-w-sm">
-            <h2 class="text-xl font-bold mb-2">Upgrade Premium</h2>
-            <p class="text-slate-400 text-sm mb-4">Bayar Rp500 untuk akses Unlimited Seumur Hidup</p>
-            <div id="qrContainer" class="bg-white p-2 rounded-lg mb-4 inline-block">
+    <section id="page-auth" class="hidden-page flex flex-col items-center justify-center min-h-screen p-6">
+        <div class="glass w-full max-w-md p-8 rounded-3xl">
+            <h2 class="text-2xl font-bold mb-2">Selamat Datang</h2>
+            <p class="text-slate-400 text-sm mb-6">Masuk ke akun RZONE Anda untuk mulai chatting.</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs text-slate-500 ml-1">Username</label>
+                    <input id="auth-user" type="text" placeholder="Masukkan username" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500">
                 </div>
-            <button onclick="closeModal()" class="block w-full text-slate-400 mt-2 text-sm">Nanti Saja</button>
+                <div>
+                    <label class="text-xs text-slate-500 ml-1">Password</label>
+                    <input id="auth-pass" type="password" placeholder="••••••••" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl font-bold transition-colors">
+                    Login / Masuk
+                </button>
+                <p class="text-center text-xs text-slate-500">Belum punya akun? Akun akan dibuat otomatis saat login pertama kali.</p>
+            </div>
+        </div>
+        <button onclick="showPage('page-landing')" class="mt-6 text-slate-500 hover:text-white text-sm">
+            <i class="fas fa-chevron-left mr-1"></i> Kembali
+        </button>
+    </section>
+
+    <section id="page-chat" class="hidden-page h-screen flex flex-col max-w-4xl mx-auto">
+        <header class="p-4 flex justify-between items-center border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                    <i class="fas fa-robot text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold leading-none">Klyna AI</h3>
+                    <span id="user-badge" class="text-[10px] bg-slate-800 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/30">Free Tier</span>
+                </div>
+            </div>
+            <button onclick="location.reload()" class="text-slate-400 hover:text-white">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </header>
+
+        <div id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div class="flex gap-3">
+                <div class="bg-blue-600/20 text-blue-100 p-4 rounded-2xl rounded-tl-none max-w-[85%] text-sm border border-blue-500/20">
+                    Halo <span id="display-name" class="font-bold"></span>! Saya Klyna. Apa yang bisa saya bantu hari ini?
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 bg-slate-900/50 backdrop-blur-md">
+            <div class="flex gap-2 bg-slate-800 p-2 rounded-2xl border border-slate-700">
+                <input id="msg-input" type="text" placeholder="Tulis pesan..." class="flex-1 bg-transparent px-4 focus:outline-none text-sm">
+                <button onclick="sendChat()" class="bg-blue-600 w-10 h-10 rounded-xl flex items-center justify-center hover:bg-blue-700 transition-transform active:scale-95">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <p id="quota-info" class="text-[10px] text-center mt-2 text-slate-500">Kuota: 50 Request / Hari</p>
+        </div>
+    </section>
+
+    <div id="modal-upgrade" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50 p-6">
+        <div class="glass p-8 rounded-[2rem] max-w-sm w-full text-center border-blue-500/50">
+            <div class="text-4xl mb-4">💎</div>
+            <h2 class="text-2xl font-bold mb-2">Limit Tercapai!</h2>
+            <p class="text-slate-400 text-sm mb-6">Buka akses **Unlimited Seumur Hidup** hanya dengan sekali bayar.</p>
+            <div class="bg-white p-3 rounded-2xl inline-block mb-4" id="qr-area">
+                </div>
+            <div class="text-2xl font-bold text-blue-400 mb-6">Rp 500</div>
+            <button onclick="closeModal()" class="w-full py-3 text-slate-500 font-medium">Tutup</button>
         </div>
     </div>
 
     <script>
-        let currentUser = "admin"; // Harusnya dari sistem login
+        let userData = { username: "", isPremium: false };
 
-        async function sendMessage() {
-            const input = document.getElementById('userInput');
-            const box = document.getElementById('chatBox');
-            if (!input.value) return;
+        function showPage(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden-page'));
+            document.getElementById(id).classList.remove('hidden-page');
+        }
 
-            // Add user bubble
-            box.innerHTML += `<div class="bg-slate-700 self-end p-2 rounded-lg max-w-[80%] text-sm">${input.value}</div>`;
+        function handleLogin() {
+            const user = document.getElementById('auth-user').value;
+            const pass = document.getElementById('auth-pass').value;
+
+            if(!user || !pass) return alert("Isi username & password!");
             
-            const msg = input.value;
+            // Logika login (Nanti hubungkan ke API/JSONBin kamu)
+            userData.username = user;
+            document.getElementById('display-name').innerText = user;
+            showPage('page-chat');
+        }
+
+        async function sendChat() {
+            const input = document.getElementById('msg-input');
+            const container = document.getElementById('chat-container');
+            if(!input.value) return;
+
+            const text = input.value;
+            // Add User Message
+            container.innerHTML += `
+                <div class="flex justify-end">
+                    <div class="bg-slate-700 p-4 rounded-2xl rounded-tr-none max-w-[85%] text-sm text-white">
+                        ${text}
+                    </div>
+                </div>
+            `;
             input.value = "";
+            container.scrollTop = container.scrollHeight;
 
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: currentUser, message: msg })
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ username: userData.username, message: text })
                 });
                 const data = await res.json();
                 
-                box.innerHTML += `<div class="bg-blue-600 self-start p-2 rounded-lg max-w-[80%] text-sm">${data.response || data.error}</div>`;
-                box.scrollTop = box.scrollHeight;
+                // Add AI Response
+                container.innerHTML += `
+                    <div class="flex gap-3">
+                        <div class="bg-blue-600/20 text-blue-100 p-4 rounded-2xl rounded-tl-none max-w-[85%] text-sm border border-blue-500/20">
+                            ${data.response || "Maaf, server sedang sibuk."}
+                        </div>
+                    </div>
+                `;
 
-                if (data.response && data.response.includes("Limit")) {
-                    showUpgrade();
+                if(data.response && data.response.includes("Limit")) {
+                    openUpgrade();
                 }
             } catch (e) {
-                console.error("Gagal kirim pesan");
+                alert("Gagal terhubung ke server.");
             }
+            container.scrollTop = container.scrollHeight;
         }
 
-        async function showUpgrade() {
-            const modal = document.getElementById('payModal');
-            const qrBox = document.getElementById('qrContainer');
-            modal.classList.remove('hidden');
+        async function openUpgrade() {
+            const modal = document.getElementById('modal-upgrade');
+            const qrArea = document.getElementById('qr-area');
+            modal.style.display = 'flex';
             
             const res = await fetch('/api/upgrade');
             const data = await res.json();
-            if (data.success) {
-                qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}" alt="QRIS">`;
+            if(data.success) {
+                qrArea.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${data.qr}" class="rounded-lg">`;
             }
         }
 
         function closeModal() {
-            document.getElementById('payModal').classList.add('hidden');
+            document.getElementById('modal-upgrade').style.display = 'none';
         }
     </script>
 </body>
