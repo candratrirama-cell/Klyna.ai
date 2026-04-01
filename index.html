@@ -3,49 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyna AI</title>
+    <title>Klyna AI Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+    </style>
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body class="bg-[#0f172a] text-slate-200 min-h-screen">
 
-    <div id="auth-page" class="flex flex-col items-center justify-center min-h-screen p-4">
-        <h1 class="text-4xl font-bold mb-6 text-blue-500">Klyna AI</h1>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md">
-            <input id="username" type="text" placeholder="Username" class="w-full p-3 mb-4 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:border-blue-500">
-            <input id="password" type="password" placeholder="Password" class="w-full p-3 mb-6 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:border-blue-500">
-            <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-bold transition">Masuk / Daftar</button>
+    <div id="auth-page" class="flex items-center justify-center min-h-screen p-6">
+        <div class="glass p-8 rounded-2xl w-full max-w-md shadow-2xl">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold text-blue-500 tracking-tight">Klyna AI</h1>
+                <p class="text-slate-400 text-sm mt-2">Next Generation Chat Assistant</p>
+            </div>
+            <div class="space-y-4">
+                <input id="username" type="text" placeholder="Username" class="w-full p-4 bg-slate-800 rounded-xl border border-slate-700 outline-none focus:border-blue-500 transition-all">
+                <input id="password" type="password" placeholder="Password" class="w-full p-4 bg-slate-800 rounded-xl border border-slate-700 outline-none focus:border-blue-500 transition-all">
+                <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-xl font-bold shadow-lg shadow-blue-900/20 transition-all transform active:scale-95">Masuk / Daftar Sekarang</button>
+            </div>
         </div>
     </div>
 
-    <div id="chat-page" class="hidden flex flex-col h-screen">
-        <header class="p-4 bg-gray-800 flex justify-between items-center shadow-md">
-            <div>
-                <span class="font-bold text-xl text-blue-400">Klyna AI</span>
-                <span id="user-badge" class="ml-2 text-xs bg-gray-600 px-2 py-1 rounded">Free</span>
+    <div id="chat-page" class="hidden flex flex-col h-screen max-w-4xl mx-auto border-x border-slate-800 bg-[#0f172a]">
+        <header class="p-4 glass flex justify-between items-center z-10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center font-bold">K</div>
+                <div>
+                    <h2 class="font-bold leading-none">Klyna AI</h2>
+                    <span id="badge" class="text-[10px] uppercase tracking-widest text-blue-400">Loading Tier...</span>
+                </div>
             </div>
-            <button onclick="logout()" class="text-red-400 text-sm">Logout</button>
+            <button onclick="logout()" class="text-xs text-slate-500 hover:text-red-400">Keluar</button>
         </header>
 
-        <div id="chat-box" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div id="chat-box" class="flex-1 overflow-y-auto p-6 space-y-6">
+            <div class="bg-blue-600/10 border border-blue-500/20 p-4 rounded-xl text-sm text-blue-300">
+                Halo! Saya Klyna AI. Ada yang bisa saya bantu hari ini?
             </div>
-
-        <div id="premium-banner" class="hidden p-3 bg-yellow-600 text-center text-sm font-bold cursor-pointer" onclick="buyPremium()">
-            Upgrade Premium Seumur Hidup (Rp500) - Klik di sini!
         </div>
 
-        <div class="p-4 bg-gray-800 flex gap-2">
-            <input id="chat-input" type="text" placeholder="Tanya sesuatu..." class="flex-1 p-3 bg-gray-700 rounded-lg outline-none">
-            <button onclick="sendMessage()" class="bg-blue-600 px-6 py-2 rounded-lg font-bold">Kirim</button>
+        <div id="premium-banner" class="hidden mx-4 mb-2 p-3 bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl text-center shadow-lg cursor-pointer hover:brightness-110 transition-all transform active:scale-95" onclick="buyPremium()">
+            <span class="text-xs font-bold text-white">⭐ UPGRADE PREMIUM SEUMUR HIDUP RP500 (KLIK DISINI) ⭐</span>
+        </div>
+
+        <div class="p-4 bg-slate-900/50 backdrop-blur-md">
+            <div class="flex gap-2 bg-slate-800 p-2 rounded-2xl border border-slate-700">
+                <input id="chat-input" type="text" placeholder="Tulis pesan..." class="flex-1 bg-transparent p-3 outline-none text-sm" onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()" class="bg-blue-600 p-3 rounded-xl hover:bg-blue-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pay-modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-6 z-50">
+        <div class="bg-white p-6 rounded-2xl text-center max-w-xs w-full">
+            <h3 class="text-slate-900 font-bold mb-4">Scan QRIS untuk Premium</h3>
+            <img id="qris-img" class="w-full mb-4 rounded-lg shadow-md" src="" alt="QRIS">
+            <p class="text-slate-500 text-xs mb-4">Total: Rp500 (Sekali Bayar)</p>
+            <div class="animate-pulse text-blue-600 font-bold text-sm">Menunggu Pembayaran...</div>
+            <button onclick="closeModal()" class="mt-4 text-red-500 text-xs font-bold uppercase">Batal</button>
         </div>
     </div>
 
     <script>
         let currentUser = localStorage.getItem('klyna_user');
+        let checkPayInterval;
+
         if(currentUser) showChat();
 
         async function login() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
+            if(!user || !pass) return alert("Isi semua data!");
+
             const res = await fetch('/api/login', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -54,22 +88,18 @@
             const data = await res.json();
             if(data.success) {
                 localStorage.setItem('klyna_user', user);
+                localStorage.setItem('is_premium', data.user.isPremium);
                 currentUser = user;
                 showChat();
-            } else {
-                alert(data.msg);
-            }
+            } else alert(data.msg);
         }
 
         function showChat() {
             document.getElementById('auth-page').classList.add('hidden');
             document.getElementById('chat-page').classList.remove('hidden');
-            checkPremiumStatus();
-        }
-
-        function logout() {
-            localStorage.removeItem('klyna_user');
-            location.reload();
+            const isPrem = localStorage.getItem('is_premium') === 'true';
+            document.getElementById('badge').innerText = isPrem ? '👑 Premium Lifetime' : '⚡ Free Tier (50/Day)';
+            if(!isPrem) document.getElementById('premium-banner').classList.remove('hidden');
         }
 
         async function sendMessage() {
@@ -77,7 +107,7 @@
             const text = input.value;
             if(!text) return;
             
-            appendMessage('You', text);
+            appendMsg('You', text);
             input.value = '';
 
             const res = await fetch('/api/chat', {
@@ -86,14 +116,18 @@
                 body: JSON.stringify({username: currentUser, text: text})
             });
             const data = await res.json();
-            appendMessage('Klyna', data.result || data.error);
+            appendMsg('Klyna', data.result);
         }
 
-        function appendMessage(sender, text) {
+        function appendMsg(sender, text) {
             const box = document.getElementById('chat-box');
-            box.innerHTML += `<div class="p-3 rounded-lg ${sender === 'You' ? 'bg-blue-900 ml-auto' : 'bg-gray-700'} max-w-[80%] w-fit">
-                <b class="block text-xs opacity-50">${sender}</b> ${text}
+            const isMe = sender === 'You';
+            const html = `<div class="flex ${isMe ? 'justify-end' : 'justify-start'} animate-fadeIn">
+                <div class="max-w-[85%] p-4 rounded-2xl ${isMe ? 'bg-blue-600 text-white rounded-tr-none' : 'glass text-slate-200 rounded-tl-none'} shadow-sm">
+                    <p class="text-sm leading-relaxed">${text}</p>
+                </div>
             </div>`;
+            box.innerHTML += html;
             box.scrollTop = box.scrollHeight;
         }
 
@@ -101,10 +135,10 @@
             const res = await fetch('/api/pay-create');
             const data = await res.json();
             if(data.success) {
-                const win = window.open('', '_blank');
-                win.document.write(`<h3>Scan QRIS Rp500</h3><img src="https://api.qrserver.com/v1/create-qr-code/?data=${data.qr}"><p>Jangan tutup halaman ini sampai pembayaran terdeteksi.</p>`);
+                document.getElementById('qris-img').src = `https://api.qrserver.com/v1/create-qr-code/?data=${data.qr}`;
+                document.getElementById('pay-modal').classList.replace('hidden', 'flex');
                 
-                const interval = setInterval(async () => {
+                checkPayInterval = setInterval(async () => {
                     const check = await fetch('/api/pay-check', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
@@ -112,19 +146,23 @@
                     });
                     const resCheck = await check.json();
                     if(resCheck.success) {
-                        alert("Pembayaran Berhasil! Anda sekarang Premium.");
-                        clearInterval(interval);
-                        win.close();
+                        clearInterval(checkPayInterval);
+                        alert("Pembayaran Berhasil! Nikmati fitur Premium.");
+                        localStorage.setItem('is_premium', 'true');
                         location.reload();
                     }
                 }, 5000);
             }
         }
 
-        function checkPremiumStatus() {
-            // Logika sederhana: Jika user login, backend akan handle limitnya. 
-            // Banner upgrade tampil jika status user di backend isPremium = false.
-            document.getElementById('premium-banner').classList.remove('hidden');
+        function closeModal() {
+            clearInterval(checkPayInterval);
+            document.getElementById('pay-modal').classList.replace('flex', 'hidden');
+        }
+
+        function logout() {
+            localStorage.clear();
+            location.reload();
         }
     </script>
 </body>
