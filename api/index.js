@@ -21,32 +21,38 @@ async function getDB() {
 }
 
 async function updateDB(data) {
-    await axios.put(`https://api.jsonbin.io/v3/b/${BIN_ID}`, data, {
-        headers: { 'X-Master-Key': MASTER_KEY, 'Content-Type': 'application/json' }
-    });
+    try {
+        await axios.put(`https://api.jsonbin.io/v3/b/${BIN_ID}`, data, {
+            headers: { 'X-Master-Key': MASTER_KEY, 'Content-Type': 'application/json' }
+        });
+        return true;
+    } catch (e) { return false; }
 }
 
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
+    if (!username || !password) return res.json({ success: false, msg: "Isi semua data" });
     let db = await getDB();
-    if (!db.users[username]) {
+    if (!db.users) db.users = {};
+    if (db.users[username]) {
+        if (db.users[username].password !== password) return res.json({ success: false, msg: "Password salah" });
+    } else {
         db.users[username] = { password, isPremium: false, chatCount: 0, lastDate: new Date().toDateString() };
         await updateDB(db);
-    } else if (db.users[username].password !== password) {
-        return res.json({ success: false, msg: "Password salah" });
     }
-    res.json({ success: true, user: db.users[username] });
+    res.json({ success: true, user: { username, isPremium: db.users[username].isPremium } });
 });
 
 app.post('/api/chat', async (req, res) => {
     const { username, text } = req.body;
     let db = await getDB();
     let user = db.users[username];
-    const today = new Date().toDateString();
+    if (!user) return res.json({ result: "Sesi habis, login ulang." });
 
+    const today = new Date().toDateString();
     if (!user.isPremium) {
         if (user.lastDate !== today) { user.chatCount = 0; user.lastDate = today; }
-        if (user.chatCount >= 50) return res.json({ result: "Limit harian habis. Upgrade Premium Rp500!" });
+        if (user.chatCount >= 50) return res.json({ result: "Limit gratis habis. Upgrade Premium Rp500!", isPremium: false });
     }
 
     try {
@@ -55,7 +61,7 @@ app.post('/api/chat', async (req, res) => {
         if (!user.isPremium) user.chatCount++;
         await updateDB(db);
         res.json({ result: reply, isPremium: user.isPremium });
-    } catch (e) { res.json({ result: "API Error" }); }
+    } catch (e) { res.json({ result: "API Sibuk." }); }
 });
 
 app.get('/api/pay-create', async (req, res) => {
@@ -66,7 +72,7 @@ app.get('/api/pay-create', async (req, res) => {
 app.post('/api/pay-check', async (req, res) => {
     const { username, trxId } = req.body;
     const r = await axios.get(`https://bior-beta.vercel.app/api/pay?action=check&trxId=${trxId}`);
-    if (r.data.paid) {
+    if (r.data.success && r.data.paid) {
         let db = await getDB();
         db.users[username].isPremium = true;
         await updateDB(db);
