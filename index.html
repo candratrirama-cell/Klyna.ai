@@ -3,51 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klyna AI - Dashboard</title>
+    <title>Klyna AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: #f8fafc; scroll-behavior: smooth; }
-        .user-bubble { background: #2563eb; border-radius: 20px 20px 4px 20px; align-self: flex-end; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: #f8fafc; overflow: hidden; }
+        .user-bubble { background: #2563eb; border-radius: 20px 20px 4px 20px; align-self: flex-end; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2); }
         .ai-bubble { background: #1e293b; border-radius: 4px 20px 20px 20px; align-self: flex-start; border: 1px solid rgba(255,255,255,0.05); }
-        pre { background: #0f172a; padding: 16px; border-radius: 12px; overflow-x: auto; font-family: monospace; font-size: 13px; margin-top: 10px; border: 1px solid #334155; position: relative; }
+        pre { background: #0f172a; padding: 14px; border-radius: 12px; overflow-x: auto; font-size: 12px; margin-top: 8px; border: 1px solid #334155; position: relative; color: #93c5fd; }
         .typing-dot { width: 5px; height: 5px; background: #3b82f6; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out; }
         @keyframes bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-5px); } }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden">
+<body class="h-screen flex flex-col">
 
     <div id="landing-page" class="fixed inset-0 z-50 bg-[#020617] flex flex-col overflow-y-auto">
         <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
-            <div class="text-2xl font-black text-blue-500">KLYNA AI</div>
-            <button onclick="showAuth()" class="bg-blue-600 px-6 py-2 rounded-full font-bold text-sm">Masuk</button>
+            <div class="text-2xl font-black text-blue-500 underline decoration-blue-500/30">KLYNA.</div>
+            <button onclick="showAuth()" class="bg-blue-600 px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest">Masuk</button>
         </nav>
-        <div class="flex-1 flex flex-col items-center justify-center text-center px-6 pb-20">
-            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter">AI Pintar Untuk <br><span class="text-blue-500">Masa Depanmu.</span></h1>
-            <p class="text-slate-400 max-w-lg mb-10">Asisten cerdas yang siap membantu tugas, coding, dan pencarian informasi secepat kilat.</p>
-            <div class="flex gap-4">
-                <button onclick="showAuth()" class="bg-blue-600 px-8 py-4 rounded-2xl font-bold shadow-xl shadow-blue-600/20">Mulai Sekarang</button>
-                <a href="https://rm-two.vercel.app" target="_blank" class="bg-slate-900 border border-slate-800 px-8 py-4 rounded-2xl font-bold">Donasi Dev</a>
+        <div class="flex-1 flex flex-col items-center justify-center text-center px-6 pb-32">
+            <h1 class="text-6xl font-black mb-6 tracking-tighter leading-none">Smart AI <br><span class="text-blue-500">Fast & Pro.</span></h1>
+            <p class="text-slate-400 max-w-sm mb-12 text-sm">Asisten pintar untuk coding dan tugas harian tanpa batas.</p>
+            <div class="flex flex-col w-full max-w-xs gap-3">
+                <button onclick="showAuth()" class="bg-blue-600 p-5 rounded-2xl font-black shadow-2xl shadow-blue-600/30">MULAI CHAT</button>
+                <a href="https://rm-two.vercel.app" target="_blank" class="bg-slate-900 border border-slate-800 p-5 rounded-2xl font-bold text-sm">DONASI DEVELOPER</a>
             </div>
         </div>
     </div>
 
     <div id="auth-page" class="hidden fixed inset-0 z-[60] bg-slate-950 flex items-center justify-center p-6">
-        <div class="w-full max-w-sm bg-slate-900 p-10 rounded-[2.5rem] border border-white/5 text-center shadow-2xl">
-            <h2 class="text-3xl font-black mb-8">KLYNA AI</h2>
+        <div class="w-full max-w-sm bg-slate-900 p-10 rounded-[2.5rem] border border-white/5 text-center">
+            <h2 class="text-3xl font-black mb-8 italic">LOGIN</h2>
             <input id="username" type="text" placeholder="Username" class="w-full p-4 mb-3 bg-slate-800 rounded-2xl outline-none focus:ring-1 ring-blue-500">
             <input id="password" type="password" placeholder="Password" class="w-full p-4 mb-8 bg-slate-800 rounded-2xl outline-none focus:ring-1 ring-blue-500">
-            <button onclick="login()" class="w-full bg-blue-600 p-4 rounded-2xl font-bold hover:bg-blue-500 transition-all">Sign In</button>
-            <button onclick="location.reload()" class="mt-6 text-xs text-slate-500 block w-full uppercase tracking-widest font-bold">Kembali</button>
+            <button onclick="login()" class="w-full bg-blue-600 p-4 rounded-2xl font-bold">SIGN IN</button>
         </div>
     </div>
 
     <div id="dashboard" class="hidden flex-1 flex flex-col bg-[#020617]">
-        <header class="p-4 border-b border-white/5 flex justify-between items-center bg-slate-950/50 backdrop-blur-md">
-            <div id="badge" class="text-[10px] font-bold px-3 py-1 rounded-full bg-slate-800 text-slate-400 uppercase tracking-widest">Memuat...</div>
-            <div class="flex gap-4 items-center">
-                <a href="https://rm-two.vercel.app" target="_blank" class="text-[10px] font-bold text-blue-400 hover:text-white transition">DONASI ❤️</a>
-                <button onclick="logout()" class="text-xs text-slate-500 font-bold">LOGOUT</button>
+        <header class="p-4 border-b border-white/5 flex justify-between items-center bg-slate-950/80 backdrop-blur-xl">
+            <div class="flex flex-col">
+                <span id="badge" class="text-[9px] font-black tracking-widest text-slate-500 uppercase">MEMUAT...</span>
+                <span class="text-[10px] text-blue-500 font-bold">GoR 1.1 Lock</span>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button id="header-upgrade" onclick="buyPremium()" class="bg-blue-600 text-[10px] font-black px-4 py-2 rounded-full shadow-lg shadow-blue-600/20 animate-pulse">UPGRADE PRO RP500</button>
+                <button onclick="logout()" class="p-2 bg-slate-800 rounded-full">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                </button>
             </div>
         </header>
 
@@ -56,23 +61,22 @@
         </div>
 
         <div class="p-4 max-w-2xl mx-auto w-full pb-8">
-            <div class="flex gap-2 items-center bg-slate-900 p-2 rounded-3xl border border-slate-800 shadow-2xl">
-                <input id="chat-input" type="text" placeholder="Tanyakan sesuatu..." class="flex-1 bg-transparent p-4 outline-none text-sm ml-2 text-white" onkeypress="if(event.key==='Enter') sendMessage()">
-                <button onclick="sendMessage()" class="bg-blue-600 p-4 rounded-2xl hover:bg-blue-500 transition shadow-lg shadow-blue-600/20">
+            <div class="flex gap-2 items-center bg-slate-900/50 p-2 rounded-3xl border border-white/5 backdrop-blur-md">
+                <input id="chat-input" type="text" placeholder="Tanya sesuatu..." class="flex-1 bg-transparent p-4 outline-none text-sm text-white" onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()" class="bg-blue-600 p-4 rounded-2xl hover:scale-95 transition-all">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
                 </button>
             </div>
-            <p id="upgrade-btn" class="text-center text-[10px] mt-4 text-blue-500/50 cursor-pointer font-bold uppercase tracking-widest" onclick="buyPremium()">✨ Get Premium Lifetime Rp500 ✨</p>
         </div>
     </div>
 
-    <div id="pay-modal" class="fixed inset-0 bg-black/95 hidden items-center justify-center z-[100] p-6 backdrop-blur-sm">
-        <div class="bg-white p-8 rounded-[3rem] text-center max-w-xs w-full text-slate-900">
-            <h3 class="font-black text-xl mb-2">Go Premium</h3>
-            <p class="text-slate-400 text-[10px] mb-6">Scan QRIS untuk akses selamanya</p>
+    <div id="pay-modal" class="fixed inset-0 bg-black/95 hidden items-center justify-center z-[100] p-6 backdrop-blur-md">
+        <div class="bg-white p-8 rounded-[3rem] text-center max-w-xs w-full text-slate-900 shadow-2xl">
+            <h3 class="font-black text-xl mb-1 tracking-tighter">Premium Launching</h3>
+            <p class="text-blue-600 font-bold text-[14px] mb-6 underline decoration-blue-200">Hanya Rp500 Sekali Bayar</p>
             <img id="qris-img" class="w-full rounded-3xl border-4 border-slate-50 mb-6" src="">
-            <div class="text-[10px] text-blue-600 font-bold animate-pulse tracking-widest">MENUNGGU PEMBAYARAN...</div>
-            <button onclick="location.reload()" class="mt-8 text-xs text-slate-400 font-bold uppercase tracking-widest">Batal</button>
+            <div class="text-[10px] text-blue-600 font-black animate-pulse tracking-widest uppercase">Menunggu Pembayaran...</div>
+            <button onclick="location.reload()" class="mt-8 text-[10px] text-slate-400 font-black uppercase tracking-widest">Batal</button>
         </div>
     </div>
 
@@ -92,9 +96,14 @@
         function updateUI() {
             const isPrem = localStorage.getItem('is_premium') === 'true';
             const b = document.getElementById('badge');
-            b.innerText = isPrem ? "👑 PREMIUM" : "⚡ FREE USER";
-            b.className = isPrem ? "text-[10px] font-bold px-3 py-1 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-600/30" : "text-[10px] font-bold px-3 py-1 rounded-full bg-slate-800 text-slate-400";
-            if(isPrem) document.getElementById('upgrade-btn').classList.add('hidden');
+            const upBtn = document.getElementById('header-upgrade');
+            
+            b.innerText = isPrem ? "👑 PREMIUM LIFETIME" : "⚡ FREE (LIMIT 50)";
+            b.className = isPrem ? "text-[9px] font-black tracking-widest text-blue-500 uppercase" : "text-[9px] font-black tracking-widest text-slate-500 uppercase";
+            
+            // Sembunyikan tombol upgrade jika sudah premium
+            if(isPrem) upBtn.classList.add('hidden');
+            else upBtn.classList.remove('hidden');
         }
 
         async function login() {
@@ -106,7 +115,7 @@
                 localStorage.setItem('klyna_user', u);
                 localStorage.setItem('is_premium', data.user.isPremium);
                 showDashboard();
-            } else alert(data.msg);
+            }
         }
 
         async function sendMessage() {
@@ -116,9 +125,18 @@
             appendMsg('User', text);
             input.value = '';
             const tid = appendTyping();
+            
             const res = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: localStorage.getItem('klyna_user'), text}) });
             const data = await res.json();
             removeTyping(tid);
+
+            // JIKA LIMIT HABIS
+            if(data.result === "LIMIT_REACHED") {
+                appendMsg('AI', data.msg);
+                buyPremium(); // Otomatis buka QRIS
+                return;
+            }
+
             if(data.isPremium !== undefined) { localStorage.setItem('is_premium', data.isPremium); updateUI(); }
             appendMsg('AI', data.result);
         }
@@ -127,34 +145,30 @@
             const inner = document.getElementById('chat-inner');
             const isUser = sender === 'User';
             const div = document.createElement('div');
-            div.className = `flex flex-col ${isUser ? 'items-end' : 'items-start'} max-w-full`;
+            div.className = `flex flex-col ${isUser ? 'items-end' : 'items-start'} w-full animate-in fade-in slide-in-from-bottom-1`;
             
-            // Format Link Otomatis
+            // Link & Kode Filter
             let formatted = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-blue-400 underline font-bold">$1</a>');
-            
-            // Format Kode & Tombol Salin
             if (formatted.includes('```')) {
                 formatted = formatted.replace(/```([\s\S]*?)```/g, (match, code) => {
-                    const cleanCode = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+                    const cleanCode = code.trim();
                     return `
-                        <div class="relative w-full">
+                        <div class="relative w-full group">
                             <pre><code>${code}</code></pre>
-                            <button onclick="copyText(this, \`${cleanCode.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" class="absolute top-2 right-2 bg-blue-600/80 text-[9px] font-bold px-3 py-1 rounded-md text-white hover:bg-blue-500 transition">SALIN</button>
-                        </div>
-                    `;
+                            <button onclick="copyText(this, \`${cleanCode.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" class="absolute top-2 right-2 bg-blue-600 text-[9px] font-black px-3 py-1.5 rounded-lg text-white opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">Salin</button>
+                        </div>`;
                 });
             }
 
-            div.innerHTML = `<div class="${isUser ? 'user-bubble text-white' : 'ai-bubble text-slate-200'} p-4 px-5 text-[14px] leading-relaxed max-w-[90%] shadow-xl">${formatted}</div>`;
+            div.innerHTML = `<div class="${isUser ? 'user-bubble text-white' : 'ai-bubble text-slate-200'} p-4 px-5 text-[14px] leading-relaxed max-w-[85%]">${formatted}</div>`;
             inner.appendChild(div);
             document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
         }
 
         function copyText(btn, code) {
             navigator.clipboard.writeText(code);
-            const original = btn.innerText;
-            btn.innerText = "TERSALIN!";
-            setTimeout(() => btn.innerText = original, 2000);
+            btn.innerText = "COPIED!";
+            setTimeout(() => btn.innerText = "SALIN", 2000);
         }
 
         async function buyPremium() {
@@ -165,7 +179,7 @@
             checkPay = setInterval(async () => {
                 const c = await fetch('/api/pay-check', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: localStorage.getItem('klyna_user'), trxId: data.trxId}) });
                 const r = await c.json();
-                if(r.success) { clearInterval(checkPay); localStorage.setItem('is_premium', 'true'); updateUI(); document.getElementById('pay-modal').classList.add('hidden'); alert("👑 Premium Aktif Selamanya!"); }
+                if(r.success) { clearInterval(checkPay); localStorage.setItem('is_premium', 'true'); updateUI(); document.getElementById('pay-modal').classList.add('hidden'); alert("👑 Premium Aktif!"); }
             }, 5000);
         }
 
