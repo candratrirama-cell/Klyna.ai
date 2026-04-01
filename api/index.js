@@ -12,16 +12,12 @@ const KLYNA_KEY = 'klyna-5x9k1koc';
 const RPY_KEY = 'RPY-Y20IM0NS';
 
 async function getDB() {
-    const res = await axios.get(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': MASTER_KEY }
-    });
+    const res = await axios.get(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
     return res.data.record;
 }
 
 async function updateDB(data) {
-    await axios.put(`https://api.jsonbin.io/v3/b/${BIN_ID}`, data, {
-        headers: { 'X-Master-Key': MASTER_KEY, 'Content-Type': 'application/json' }
-    });
+    await axios.put(`https://api.jsonbin.io/v3/b/${BIN_ID}`, data, { headers: { 'X-Master-Key': MASTER_KEY, 'Content-Type': 'application/json' } });
 }
 
 app.post('/api/login', async (req, res) => {
@@ -36,7 +32,7 @@ app.post('/api/login', async (req, res) => {
             await updateDB(db);
         }
         res.json({ success: true, user: db.users[username] });
-    } catch (e) { res.status(500).json({ success: false, msg: "Database Error" }); }
+    } catch (e) { res.status(500).json({ success: false, msg: "DB Error" }); }
 });
 
 app.post('/api/chat', async (req, res) => {
@@ -46,44 +42,33 @@ app.post('/api/chat', async (req, res) => {
     const today = new Date().toDateString();
 
     if (!user.isPremium) {
-        if (user.lastDate !== today) {
-            user.chatCount = 0;
-            user.lastDate = today;
-        }
-        if (user.chatCount >= 50) return res.json({ result: "Limit chat harian (50) habis. Silahkan upgrade ke Premium hanya Rp500!" });
+        if (user.lastDate !== today) { user.chatCount = 0; user.lastDate = today; }
+        if (user.chatCount >= 50) return res.json({ result: "Limit 50 chat habis. Upgrade Premium Rp500!" });
     }
 
     try {
         const response = await axios.get(`https://klyna-swart.vercel.app/api/chat?key=${KLYNA_KEY}&text=${encodeURIComponent(text)}`);
-        // Perbaikan: Ambil properti 'result' atau 'data' sesuai format API Klyna
-        const reply = typeof response.data === 'object' ? (response.data.result || response.data.reply || JSON.stringify(response.data)) : response.data;
-        
+        let reply = response.data.result || response.data.reply || (typeof response.data === 'string' ? response.data : JSON.stringify(response.data));
         if (!user.isPremium) user.chatCount++;
         await updateDB(db);
         res.json({ result: reply });
-    } catch (e) {
-        res.json({ result: "Maaf, API Klyna sedang gangguan." });
-    }
+    } catch (e) { res.json({ result: "API Offline" }); }
 });
 
 app.get('/api/pay-create', async (req, res) => {
-    try {
-        const r = await axios.get(`https://bior-beta.vercel.app/api/pay?key=${RPY_KEY}&amt=500`);
-        res.json(r.data);
-    } catch (e) { res.status(500).json({ success: false }); }
+    const r = await axios.get(`https://bior-beta.vercel.app/api/pay?key=${RPY_KEY}&amt=500`);
+    res.json(r.data);
 });
 
 app.post('/api/pay-check', async (req, res) => {
     const { username, trxId } = req.body;
-    try {
-        const r = await axios.get(`https://bior-beta.vercel.app/api/pay?action=check&trxId=${trxId}`);
-        if (r.data.paid) {
-            let db = await getDB();
-            db.users[username].isPremium = true;
-            await updateDB(db);
-            res.json({ success: true });
-        } else { res.json({ success: false }); }
-    } catch (e) { res.json({ success: false }); }
+    const r = await axios.get(`https://bior-beta.vercel.app/api/pay?action=check&trxId=${trxId}`);
+    if (r.data.paid) {
+        let db = await getDB();
+        db.users[username].isPremium = true;
+        await updateDB(db);
+        res.json({ success: true });
+    } else res.json({ success: false });
 });
 
 module.exports = app;
