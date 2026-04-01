@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klyna AI - RZONE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: white; font-family: sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="h-screen flex flex-col p-4">
+
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold text-blue-400">Klyna <span class="text-white">AI</span></h1>
+        <div id="userStatus" class="text-sm bg-slate-800 px-3 py-1 rounded-full border border-slate-700">
+            Checking status...
+        </div>
+    </div>
+
+    <div id="chatBox" class="flex-1 overflow-y-auto glass rounded-xl p-4 mb-4 flex flex-col gap-3">
+        <div class="bg-blue-600 self-start p-2 rounded-lg max-w-[80%] text-sm">
+            Halo! Saya Klyna AI. Ada yang bisa saya bantu?
+        </div>
+    </div>
+
+    <div class="flex gap-2">
+        <input id="userInput" type="text" placeholder="Tanya sesuatu..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">Kirim</button>
+    </div>
+
+    <div id="payModal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-6">
+        <div class="bg-slate-900 border border-blue-500 p-6 rounded-2xl text-center max-w-sm">
+            <h2 class="text-xl font-bold mb-2">Upgrade Premium</h2>
+            <p class="text-slate-400 text-sm mb-4">Bayar Rp500 untuk akses Unlimited Seumur Hidup</p>
+            <div id="qrContainer" class="bg-white p-2 rounded-lg mb-4 inline-block">
+                </div>
+            <button onclick="closeModal()" class="block w-full text-slate-400 mt-2 text-sm">Nanti Saja</button>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = "admin"; // Harusnya dari sistem login
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const box = document.getElementById('chatBox');
+            if (!input.value) return;
+
+            // Add user bubble
+            box.innerHTML += `<div class="bg-slate-700 self-end p-2 rounded-lg max-w-[80%] text-sm">${input.value}</div>`;
+            
+            const msg = input.value;
+            input.value = "";
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: currentUser, message: msg })
+                });
+                const data = await res.json();
+                
+                box.innerHTML += `<div class="bg-blue-600 self-start p-2 rounded-lg max-w-[80%] text-sm">${data.response || data.error}</div>`;
+                box.scrollTop = box.scrollHeight;
+
+                if (data.response && data.response.includes("Limit")) {
+                    showUpgrade();
+                }
+            } catch (e) {
+                console.error("Gagal kirim pesan");
+            }
+        }
+
+        async function showUpgrade() {
+            const modal = document.getElementById('payModal');
+            const qrBox = document.getElementById('qrContainer');
+            modal.classList.remove('hidden');
+            
+            const res = await fetch('/api/upgrade');
+            const data = await res.json();
+            if (data.success) {
+                qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}" alt="QRIS">`;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('payModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
